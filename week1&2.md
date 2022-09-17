@@ -131,6 +131,8 @@ binding.rb #for debugging
 Integration test - when testing multiple classes working together
 Unit test - test for single class
 
+Questions for the coach:
+If both methods have the same name (e.g. reading time). How program known which one I want to use?
 
 
 
