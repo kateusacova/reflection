@@ -245,3 +245,13 @@ _Encode each example as a test. You can add to the above list as you go._
 _After each test you write, follow the test-driving process of red, green,
 refactor to implement the behaviour._
 
+
+# Mocking bites
+
+Instead of using real class instances (e.g. DairyEntry for Dairy), we use fake instances (doubles), so that we can test the parent Class withour relying on its child class.
+
+``` ruby
+fake_diary_entry_1 = double :diary_entry # just the empty class
+
+fake_diary_entry_1 = double :diary_entry, count_words: 2 # class with methodss
+```
