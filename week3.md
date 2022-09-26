@@ -68,8 +68,37 @@ INSERT INTO [table name]
 INSERT INTO albums
   (title, release_year)
   VALUES('Mezzanine', 1998);
+  
+INSERT INTO artists
+  (name, genre)
+  VALUES('Radiohead', 'Alternative');
+
+INSERT INTO albums
+  (title, release_year, artist_id)
+  VALUES('OK Computer', 1997, 6);
+```
+## Connecting Ruby and PostgreSQL
+
+- Model class
+  - Hold a recoder's data
+  - e.g. class **Student** for table `students`, w/ _attributes for each column_
+
+- Repository class
+  - Implements methods to run SQL queries
+  - e.g. StudentRepository
+
+### Mapping of classes
+
+```
+project/
+   app.rb
+   lib/
+      student.rb
+      student_repository.rb
+   spec/
+      student_repository_spec.rb
 ```
 
-
+***Object-relational mapping*** - converting records from a database into objects we use in our program
 
 
