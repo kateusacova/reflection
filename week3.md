@@ -101,4 +101,10 @@ project/
 
 ***Object-relational mapping*** - converting records from a database into objects we use in our program
 
+## Relationship in Relational Databases
 
+One-to-many
+- most common
+- one record in a table associated with many records in another table
+- e.g. One blog post can be associated with many records of comments
+- designed by creating the foreign key
