@@ -108,3 +108,16 @@ One-to-many
 - one record in a table associated with many records in another table
 - e.g. One blog post can be associated with many records of comments
 - designed by creating the foreign key
+
+# Day 4 Notes
+
+```SQL
+SELECT albums.id AS album_id, -- can specify the name of the column to avoid ambiguity
+       artists.id AS artist_id,
+       albums.title,
+       artists.name
+  FROM artists 
+    JOIN albums -- will be first to specify on the next line
+    ON albums.artist_id = artists.id 
+  WHERE artists.name = 'ABBA'; -- can also filter the selection
+```
