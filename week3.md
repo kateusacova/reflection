@@ -121,3 +121,29 @@ SELECT albums.id AS album_id, -- can specify the name of the column to avoid amb
     ON albums.artist_id = artists.id 
   WHERE artists.name = 'ABBA'; -- can also filter the selection
 ```
+
+# Day 5 Notes
+
+## Many-to-many relationships
+
+- _When a record from the first table can have many records in the other table, and the other way is also true._
+- e.g. posts and tags
+- made with a joint table consisting of two foreign keys (e.g. posts.id and tags.id)
+
+```SQL
+-- Select all the tags associated with a given post.
+-- Note how we're using two different joins to "link"
+-- all the three tables together:
+--    * first, by matching only records in the join table for the given post
+--    * second, by matching only tags for these records in the join table
+SELECT tags.id, tags.name
+  FROM tags 
+    JOIN posts_tags ON posts_tags.tag_id = tags.id
+    JOIN posts ON posts_tags.post_id = posts.id
+    WHERE posts.id = 2;
+    
+    
+```
+
+**Linking two records**
+- need to insert a **new record** into a **joint table** using **two primary keys** of records which needed to be linked together
