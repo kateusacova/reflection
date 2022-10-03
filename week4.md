@@ -7,7 +7,7 @@
 - Follow a debugging process for a web application
 - Deploy a web application using a light cloud service such as Heroku
 
-
+```
  ┌──────────────┐        ┌──────────────────────────────┐
  │ Browser      │        │                              │
  │              │        │  ┌──────────┐   ┌──────────┐ │
@@ -20,8 +20,13 @@
  │              │        │                              │
  └──────────────┘        └──────────────────────────────┘
       Client                          Server
-      
-      
+ ```     
+
+## HTTP
+
+
+
+
 ## Sinatra
 
 - Ruby library
@@ -80,3 +85,60 @@ end
 ```
 - can also be used to retrieve body parameters sent with POST request
 
+
+## CRUD Routes
+
+```
+  ┌────────┐HTTP┌────────┐Meth┌────────┐SQL ┌────────┐
+  │        ├───►│        ├───►│        ├───►│        │
+  │Client  │req │Sinatra │call│Repo    │q.  │Database│
+  │        │    │app     │    │Class   │    │        │
+  │GET     │    │        │    │        │    │        │
+  │/albums │HTTP│AlbumRep│Ret │        │Res │        │
+  │        │◄───┤@all    │◄───┤        │◄───┤        │
+  └────────┘resp└────────┘val └────────┘set └────────┘
+```
+
+- HTTP routes designes to map to CRUD operations on the database
+- e.g.
+
+```
+# Albums resource: 
+
+# List all the albums
+Request: GET /albums
+Response: list of albums
+
+# Read a single album
+Request: GET /albums/1
+Response: of a single album
+
+# Create a new album
+Request: POST /albums
+  With body parameters: "title=OK Computer"
+Response: None (just creates the resource on the server)
+
+# Update a single album
+Request: PATCH /albums/1
+  With body parameters: "title=OK Computer"
+Response: None (just updates the resource on the server)
+
+# Delete an album
+Request: DELETE /albums/1
+Response: None (just deletes the resource on the server)
+```
+
+- This patter of routing is called **REST** 
+  - maps HTTP request to CRUD operations
+
+### Path parameters
+
+```ruby
+# GET /albums/1   -> get album with ID 1
+# GET /albums/5   -> get album with ID 5
+# GET /albums/12   -> get album with ID 12
+
+get '/albums/:id' do
+  album_id = params[:id] # Path parameter
+end
+```
