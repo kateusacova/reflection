@@ -24,8 +24,20 @@
 
 ## HTTP
 
-
-
+- **Server**
+  - Central machine where the program runs
+  - e.g. Ruby program
+- **Client** 
+  - machine and software used by users to interact with the program 
+  - e.g. Postman, web browser
+- HTTP request defined by:
+  - method (e.g. get, post, delete, update)
+  - path (e.g. /news)
+  - parameters (request data)
+- HTTP responnse defined by:
+  - status code (e.g. 200, 404)
+  - body (content)
+- 
 
 ## Sinatra
 
@@ -142,3 +154,78 @@ get '/albums/:id' do
   album_id = params[:id] # Path parameter
 end
 ```
+
+## HTML Responses
+
+```
+app.rb
+lib/
+  ...
+views/
+  index.erb
+```
+
+We should separate the two 
+- program logic (Ruby files)
+- response content (HTML code)
+  - so we write it in a ***view file*** in views/ dir
+
+```ruby
+context "GET to /" do
+  it 'contains a h1 title' do
+    response = get('/')
+
+    expect(response.body).to include('<h1>Hello</h1>')
+  end
+  
+  it 'contains a div' do
+    response = get('/')
+
+    expect(response.body).to include('<div>')
+  end
+end
+```
+
+## ERB
+
+**ERB file**
+- Uses Ruby variables to generate a meaningful HTML page
+  - NO! new variables/call methods that change the program
+- YES to:
+  - display values of variables
+  - loop through an array of values (to display some HTML for each item)
+  - use conditions to display different bits of HTMl
+
+```erb
+
+# Interpolating variables
+<p>
+  <%= @name %=> 
+</p>
+
+# Conditions
+
+<div>
+  <% if @posts.length > 0 %> 
+    <p>There are <%= @posts.length %> posts on this website.</p>
+  <% else %>
+    <p>No posts yet!</p>
+  <% end %>
+</div>
+
+# Loops
+
+<div>
+  <% @posts.each do |post| %>
+    <p>
+      <%= post.title %>
+      <%= post.author_name %>
+    </p>
+  <% end %>
+</div>
+```
+
+
+
+
+
