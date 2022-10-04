@@ -225,7 +225,81 @@ end
 </div>
 ```
 
+### Links
 
+**Anchor links**
+- HTML tag will be rendered as a hypertext link
+- User clicks => browser sends a new GET request
 
+```erb
+<a href="/about">Go to the about page</a>
+```
 
+### Forms
+
+- Used to send a POST request with some additional data (as request parameters)
+- Usually implemented with two routes
+  - GET: returns HTML page with the form
+  - POST: handles body parameters sent by the browser, returns a response (form completion)
+
+```ruby
+get '/posts/new' do
+  # This route doesn't do much,
+  # it returns the view with the HTML form.
+  return erb(:new_post)
+end
+
+post '/posts' do
+  # Get request body parameters
+  title = params[:title]
+  content = params[:content]
+
+  # Do something useful, like creating a post
+  # in a database.
+  new_post = Post.new
+  new_post.title = title
+  new_post.content = content
+  PostRepository.new.create(new_post)
+
+  # Return a view to confirm
+  # the form submission or resource creation
+  # to the user.
+  return erb(:post_created)
+end
+```
+
+**HTML Form**
+
+```erb
+<form action="/posts" method="POST"> # when the form submits, browser sends request to the path
+  <input type="text" name="title">
+  <input type="text" name="content">
+
+  <input type="submit" value="Submit the form">
+</form>
+```
+**Validation**
+- Values of name attributes must match parametes' name (***contract***)
+- To enforce contract (avoiding the client to send wrong value), add validation
+
+```ruby
+post '/posts' do
+  if invalid_request_parameters?
+    # Set the response code
+    # to 400 (Bad Request) - indicating
+    # to the client it sent incorrect data
+    # in the request.
+    status 400
+
+    return ''
+  end
+
+  # Parameters are valid,
+  # the rest of the route can execute.
+end
+
+def invalid_request_parameters?
+  params[:title] == nil || params[:content] == nil
+end
+```
 
