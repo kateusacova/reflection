@@ -303,3 +303,16 @@ def invalid_request_parameters?
 end
 ```
 
+## Passwords
+
+- Need to use encryption 
+
+## Object Relational Mapping
+
+- Active record - interface between the database and the app 
+  - lets interact with that data as though it was a normal Ruby object
+
+
+
+
+
