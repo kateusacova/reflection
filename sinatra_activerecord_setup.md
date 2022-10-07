@@ -41,6 +41,21 @@ gem "pg", "~> 1.4" # PostgreSQL
 
 ## Connecting to the Database
 
+```ruby
+# in app.rb
+
+require 'sinatra/base'
+require 'sinatra/reloader'
+
+class Application < Sinatra::Base
+  # This allows the app code to refresh
+  # without having to restart the server.
+  configure :development do
+    register Sinatra::Reloader
+  end
+end
+```
+
 ```
 mkdir config
 in config dir => touch environment.rb
