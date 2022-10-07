@@ -39,7 +39,7 @@ gem "rake", "~> 13.0" # Automates database creation
 gem "pg", "~> 1.4" # PostgreSQL
 ```
 
-## Connecting to the Database
+## Setting up Sinatra and Connecting to the Database
 
 ```ruby
 # in app.rb
@@ -56,9 +56,13 @@ class Application < Sinatra::Base
 end
 ```
 
-```
-mkdir config
-in config dir => touch environment.rb
+```ruby
+# in config.ru 
+# This  is default config file for a rackup command with a list of instructions for Rack
+
+require './config/environment'
+
+run Application
 ```
 
 ```ruby
@@ -71,20 +75,38 @@ ENV['SINATRA_ENV'] ||= "development"
 require 'bundler/setup'
 Bundler.require(:default, ENV['SINATRA_ENV'])
 
-configure :development do # Connecting to the database (depending on the environment: it will connect to chitter_development or chitter_test)
+ # Below connects to the database (depending on the environment: it will connect to chitter_development or chitter_test)
+ # Not sure what we have :development - need to figure it out
+
+configure :development do
   set :database, {adapter: 'postgresql', host: ENV['HOST'], username: ENV['USERNAME'], password: ENV['PASSWORD'], database: "chitter_ {ENV['SINATRA_ENV']}"}
 end
 
 require './app'
 ```
 
-## Rakefile
-
-```
-touch Rakefile # in root dir
-```
+## Setting up RSpec
 
 ```ruby
+# in spec/spec_helper.rb
+
+ENV["SINATRA_ENV"] = "test" # Specifying the test environment, so that test database is used
+
+require_relative "../app"
+
+require './config/environment'
+
+require "rspec"
+require "capybara"
+require "capybara/rspec"
+
+Capybara.app = Application # Setting up Capybara for future testing
+```
+
+## Rakefile
+
+```ruby
+# in Rakefile (yes, no extension)
 require './config/environment'
 require 'sinatra/activerecord/rake'
 ```
@@ -97,6 +119,8 @@ rake db:create_migration NAME=create_users # Last word specifies the name of the
 ```
 
 ```ruby
+# in db/migrate/20221006111933_create_users.rb
+
 class CreateUsers < ActiveRecord::Migration[7.0]
   def change
     create_table :users do |t| # specifying name of the table
@@ -115,6 +139,8 @@ rake db:create_migration NAME=create_peeps
 ```
 
 ```ruby
+# in db/migrate/20221007142644_create_peeps.rb
+
 class CreatePeeps < ActiveRecord::Migration[7.0]
   def change
     create_table :peeps do |t|
@@ -129,6 +155,6 @@ end
 ```
 
 ```
-rake db:migrate SINATRA_ENV=development # To add tables in the development database
-rake db:migrate SINATRA_ENV=development # To add tables in the test database
+rake db:migrate SINATRA_ENV="development" # To add tables in the development database
+rake db:migrate SINATRA_ENV="test" # To add tables in the test database
 ```
