@@ -116,3 +116,8 @@ class CreatePeeps < ActiveRecord::Migration[7.0]
 
 end
 ```
+
+```
+rake db:migrate SINATRA_ENV=development # To add tables in the development database
+
+```
