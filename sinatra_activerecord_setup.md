@@ -67,3 +67,52 @@ end
 require './app'
 ```
 
+## Rakefile
+
+```
+touch Rakefile # in root dir
+```
+
+```ruby
+require './config/environment'
+require 'sinatra/activerecord/rake'
+```
+
+```
+rake -T # If everything set up correctly - should see the ouput of rake commands
+
+rake db:create_migration NAME=create_users # Last word specifies the name of the table
+# After that it should create the file db/migrate/20221006111933_create_users.rb
+```
+
+```ruby
+class CreateUsers < ActiveRecord::Migration[7.0]
+  def change
+    create_table :users do |t| # specifying name of the table
+      t.string :login
+      t.string :username
+      t.string :password_hash # Passwords will be converted and stored in a hash
+      t.string :email
+    end
+  end
+
+end
+```
+
+```
+rake db:create_migration NAME=create_peeps
+```
+
+```ruby
+class CreatePeeps < ActiveRecord::Migration[7.0]
+  def change
+    create_table :peeps do |t|
+      t.text :content
+      t.string :tagged_users
+      t.timestamps # Automatically creates created_at and updated_at columns
+      t.integer :user_id
+    end
+  end
+
+end
+```
