@@ -56,12 +56,8 @@ ENV['SINATRA_ENV'] ||= "development"
 require 'bundler/setup'
 Bundler.require(:default, ENV['SINATRA_ENV'])
 
-configure :development do # Connecting to the 'real' database
-  set :database, {adapter: 'postgresql', host: ENV['HOST'], username: ENV['USERNAME'], password: ENV['PASSWORD'], database: 'chitter'}
-end
-
-configure :test do # Connecting to the 'test' database
-  set :database, {adapter: 'postgresql', host: ENV['HOST'], username: ENV['USERNAME'], password: ENV['PASSWORD'], database: 'chitter_test'}
+configure :development do # Connecting to the database (depending on the environment: it will connect to chitter_development or chitter_test)
+  set :database, {adapter: 'postgresql', host: ENV['HOST'], username: ENV['USERNAME'], password: ENV['PASSWORD'], database: "chitter_ {ENV['SINATRA_ENV']}"}
 end
 
 require './app'
@@ -119,5 +115,5 @@ end
 
 ```
 rake db:migrate SINATRA_ENV=development # To add tables in the development database
-
+rake db:migrate SINATRA_ENV=development # To add tables in the test database
 ```
