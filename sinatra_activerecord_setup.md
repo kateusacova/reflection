@@ -58,7 +58,7 @@ end
 
 ```ruby
 # in config.ru 
-# This  is default config file for a rackup command with a list of instructions for Rack
+# This is default config file for a rackup command with a list of instructions for Rack
 
 require './config/environment'
 
@@ -103,7 +103,7 @@ require "capybara/rspec"
 Capybara.app = Application # Setting up Capybara for future testing
 ```
 
-## Rakefile
+## Rakefile - Creating Migrations (tables)
 
 ```ruby
 # in Rakefile (yes, no extension)
@@ -158,3 +158,7 @@ end
 rake db:migrate SINATRA_ENV="development" # To add tables in the development database
 rake db:migrate SINATRA_ENV="test" # To add tables in the test database
 ```
+
+## Setting up Models
+
+
