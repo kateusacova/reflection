@@ -57,12 +57,32 @@ in config dir:
 
 in app dir:
 - controllers dir:
+  - application_controller.rb
 - models dir:
+  - peep.rb 
+  - user.rb
 - views dir: 
-
-
-
+  - includes all of HTML pages
 ```
+
+```ruby
+# in Rakefile
+
+ENV["SINATRA_ENV"] ||= "development"
+
+require_relative './config/environment'
+require 'sinatra/activerecord/rake'
+
+task :console do
+  Pry.start
+end
+
+# CL `rake -T` to see the available rake tasks.
+
+# CL `rake console` to initiate Pry (REPL)
+```
+
+
 
 
 ## Rakefile - Creating Migrations (tables)
