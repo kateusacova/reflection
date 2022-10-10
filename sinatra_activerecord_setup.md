@@ -5,21 +5,21 @@
 ```ruby
 source 'https://rubygems.org'
 
-ruby '3.0.2'
+ruby '3.1.2' # Only this version supported by Heroku
 
 group :test do 
   gem 'rspec'
   gem 'simplecov', require: false # Code coverage analysis
   gem 'simplecov-console', require: false
-  gem 'rubocop', '1.20'
+  gem 'rubocop', '1.20' # Ruby styling
   gem "rack-test", "~> 2.0" # To test responses
   gem "capybara", "~> 3.37" # To test user interaction with the app
 end
 
 group :development do # So they won't get installed on the server when deploying app
   gem "tux", "~> 0.3.0" # Interactive console that pre-loads database and ActiveRecord relationships
-  gem "shotgun", "~> 0.9.2" # Starts the server and displays the saved changes without restarting the server
   gem "dotenv", "~> 2.8" # For storing database variables
+  gem "pry", "~> 0.14.1" # For REPL to run ActiveRecord methods
 end
 
 
@@ -41,67 +41,29 @@ gem "pg", "~> 1.4" # PostgreSQL
 
 ## Setting up Sinatra and Connecting to the Database
 
-```ruby
-# in app.rb
+```
+Files structure as following:
 
-require 'sinatra/base'
-require 'sinatra/reloader'
+in root dir:
+- Rakefile
+- config.ru
 
-class Application < Sinatra::Base
-  # This allows the app code to refresh
-  # without having to restart the server.
-  configure :development do
-    register Sinatra::Reloader
-  end
-end
+in spec dir:
+- spec_helper.rb
+
+in config dir:
+- database.yml
+- environment.rb
+
+in app dir:
+- controllers dir:
+- models dir:
+- views dir: 
+
+
+
 ```
 
-```ruby
-# in config.ru 
-# This is default config file for a rackup command with a list of instructions for Rack
-
-require './config/environment'
-
-run Application
-```
-
-```ruby
-# in config/environment.rb 
-
-require 'dotenv/load' # So that file have access to environment variables
-
-ENV['SINATRA_ENV'] ||= "development"
-
-require 'bundler/setup'
-Bundler.require(:default, ENV['SINATRA_ENV'])
-
- # Below connects to the database (depending on the environment: it will connect to chitter_development or chitter_test)
- # Not sure what we have :development - need to figure it out
-
-configure :development do
-  set :database, {adapter: 'postgresql', host: ENV['HOST'], username: ENV['USERNAME'], password: ENV['PASSWORD'], database: "chitter_ {ENV['SINATRA_ENV']}"}
-end
-
-require './app'
-```
-
-## Setting up RSpec
-
-```ruby
-# in spec/spec_helper.rb
-
-ENV["SINATRA_ENV"] = "test" # Specifying the test environment, so that test database is used
-
-require_relative "../app"
-
-require './config/environment'
-
-require "rspec"
-require "capybara"
-require "capybara/rspec"
-
-Capybara.app = Application # Setting up Capybara for future testing
-```
 
 ## Rakefile - Creating Migrations (tables)
 
@@ -158,7 +120,4 @@ end
 rake db:migrate SINATRA_ENV="development" # To add tables in the development database
 rake db:migrate SINATRA_ENV="test" # To add tables in the test database
 ```
-
-## Setting up Models
-
 
