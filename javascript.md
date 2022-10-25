@@ -93,7 +93,7 @@ describe('A test for my web page', () => {
 });
 ```
 
-## Testing the Client
+### Testing the Client
 
 ```js
 const Client = require('./client');
